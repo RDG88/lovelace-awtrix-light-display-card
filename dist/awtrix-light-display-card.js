@@ -28,7 +28,7 @@ class AwtrixLightDisplayCard extends HTMLElement {
       const sensor = this.config.sensor;
       const borderSize = parseInt(this.config.bordersize) || 1; // Renamed from borderWidth to bordersize
 
-      const sensorData = hass.states[sensor].attributes.sensor_attribute;
+      const sensorData = hass.states[sensor].attributes.screen;
       if (!sensorData) {
         // Invalid sensor data, display the provided picture data
         this.createSvgElementWithPictureData(borderSize);
