@@ -13,7 +13,8 @@ class AwtrixLightDisplayCard extends HTMLElement {
 
   setConfig(config) {
     this.config = {
-      widthHeight: '256x64', // Default value for width and height
+      resolution: '256x64', // Renamed from widthHeight to resolution
+      bordersize: 1, // Renamed from borderWidth to borderSize
       ...config,
     };
   }
@@ -21,13 +22,13 @@ class AwtrixLightDisplayCard extends HTMLElement {
   set hass(hass) {
     if (
       this.config &&
-      this.config.sensorEntity &&
-      hass.states[this.config.sensorEntity]
+      this.config.sensor &&
+      hass.states[this.config.sensor]
     ) {
-      const sensorEntity = this.config.sensorEntity;
-      const borderWidth = parseInt(this.config.borderWidth) || 1;
+      const sensor = this.config.sensor;
+      const bordersize = parseInt(this.config.bordersize) || 1; // Renamed from borderWidth to bordersize
 
-      const pixelData = JSON.parse(hass.states[sensorEntity].attributes.sensor_attribute);
+      const pixelData = JSON.parse(hass.states[sensor].attributes.sensor_attribute);
       if (!Array.isArray(pixelData)) {
         this.content.innerHTML = '<div style="color: red;">Invalid sensor attribute data format.</div>';
         return;
@@ -38,7 +39,7 @@ class AwtrixLightDisplayCard extends HTMLElement {
 
       if (!this.currentSvg || isNewData) {
         // If currentSvg is not defined or the data has changed, create/update the SVG
-        const svg = this.createSvgElement(pixelData, borderWidth);
+        const svg = this.createSvgElement(pixelData, borderSize); // Updated function parameter name
 
         if (this.currentSvg && isNewData) {
           // Only replace the SVG if the data has changed
@@ -73,10 +74,10 @@ class AwtrixLightDisplayCard extends HTMLElement {
     return pixelData;
   }
 
-  createSvgElement(pixelData, borderWidth) {
-    const widthHeightParts = this.config.widthHeight.split('x');
-    const width = parseInt(widthHeightParts[0]) || this.defaultWidth;
-    const height = parseInt(widthHeightParts[1]) || this.defaultHeight;
+  createSvgElement(pixelData, borderSize) { // Updated function parameter name
+    const resolutionParts = this.config.resolution.split('x'); // Renamed from widthHeight to resolution
+    const width = parseInt(resolutionParts[0]) || this.defaultWidth;
+    const height = parseInt(resolutionParts[1]) || this.defaultHeight;
     const scaleX = width / 32;
     const scaleY = height / 8;
 
@@ -99,9 +100,9 @@ class AwtrixLightDisplayCard extends HTMLElement {
         svgPixel.setAttribute('height', scaleY);
         svgPixel.setAttribute('fill', `rgb(${red},${green},${blue})`);
 
-        // Add the borderWidth attribute to represent the border around the rectangle (pixel)
+        // Add the borderSize attribute to represent the border around the rectangle (pixel)
         svgPixel.setAttribute('stroke', 'black');
-        svgPixel.setAttribute('stroke-width', borderWidth);
+        svgPixel.setAttribute('stroke-width', borderSize); // Updated attribute name
 
         svg.appendChild(svgPixel);
       }
