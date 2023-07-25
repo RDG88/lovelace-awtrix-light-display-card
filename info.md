@@ -3,7 +3,7 @@
 
 ```yaml
 resources:
-  - url: /hacsfiles/refreshable-picture-card/refreshable-picture-card.js
+  - url: /hacsfiles/awtrix-light-display-card/awtrix-light-display-card.js
     type: module
 ```
 
