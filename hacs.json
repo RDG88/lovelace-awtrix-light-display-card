@@ -1,4 +1,5 @@
 {
     "name": "Awtrix Light Display Card",
+    "description": "A card that will display a live view from AWTRIX",
     "filename": "awtrix-light-display-card.js"
 }
