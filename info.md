@@ -1,6 +1,8 @@
 
 # AWTRIX Light Display Card #
 
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=for-the-badge)](https://github.com/hacs/integration)
+
 ```yaml
 resources:
   - url: /hacsfiles/awtrix-light-display-card/awtrix-light-display-card.js
