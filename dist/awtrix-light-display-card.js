@@ -39,7 +39,7 @@ class AwtrixLightDisplayCard extends HTMLElement {
 
       if (!this.currentSvg || isNewData) {
         // If currentSvg is not defined or the data has changed, create/update the SVG
-        const svg = this.createSvgElement(pixelData, borderSize); // Updated function parameter name
+        const svg = this.createSvgElement(pixelData, bordersize); // Updated function parameter name
 
         if (this.currentSvg && isNewData) {
           // Only replace the SVG if the data has changed
@@ -74,7 +74,7 @@ class AwtrixLightDisplayCard extends HTMLElement {
     return pixelData;
   }
 
-  createSvgElement(pixelData, borderSize) { // Updated function parameter name
+  createSvgElement(pixelData, bordersize) { // Updated function parameter name
     const resolutionParts = this.config.resolution.split('x'); // Renamed from widthHeight to resolution
     const width = parseInt(resolutionParts[0]) || this.defaultWidth;
     const height = parseInt(resolutionParts[1]) || this.defaultHeight;
@@ -102,7 +102,7 @@ class AwtrixLightDisplayCard extends HTMLElement {
 
         // Add the borderSize attribute to represent the border around the rectangle (pixel)
         svgPixel.setAttribute('stroke', 'black');
-        svgPixel.setAttribute('stroke-width', borderSize); // Updated attribute name
+        svgPixel.setAttribute('stroke-width', bordersize); // Updated attribute name
 
         svg.appendChild(svgPixel);
       }
