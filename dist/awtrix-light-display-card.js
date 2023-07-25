@@ -118,7 +118,6 @@ class AwtrixLightDisplayCard extends HTMLElement {
 
   createSvgElementWithPictureData(borderSize) {
     const pictureData = [
-      [
         0,
         0,
         0,
@@ -375,7 +374,6 @@ class AwtrixLightDisplayCard extends HTMLElement {
         0,
         0,
         0
-    ]
     ];
 
     const svg = this.createSvgElement(pictureData, borderSize);
