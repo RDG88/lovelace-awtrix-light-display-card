@@ -11,6 +11,8 @@ Configuration is straightforward and can be done via the code editor.
 
 To fetch data from the AWTRIX Light /api/screen API endpoint into a sensor, you need to create a manual command_line sensor:
 
+## Sensor configuration
+
 Example entry for the command_line sensor:
 The scan_interval in this example is set to 0.5 seconds. Please be cautious as it could potentially overload AWTRIX. Use it with care.
 Update the awtrixip in the command with the IP address of your AWTRIX Light.
@@ -29,6 +31,7 @@ command_line:
       command_timeout: 10
 ```
 
+## Card configuration
 
 |        Name        |                        Description                        |             Required             |
 | ------------------ | --------------------------------------------------------- | -------------------------------- |
