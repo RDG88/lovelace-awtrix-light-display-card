@@ -15,3 +15,9 @@ command_line:
       json_attributes:
         - screen
       command_timeout: 10
+
+
+type: custom:awtrix-light-display-card
+sensor: sensor.ulanzi3_screenshot_2
+resolution: 512x128
+bordersize: 1
