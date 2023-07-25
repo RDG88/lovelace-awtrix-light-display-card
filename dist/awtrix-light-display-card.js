@@ -1,4 +1,4 @@
-import "./refreshable-picture-card-editor.js";
+import "./awtrix-light-display-card-editor.js";
 import { handleAction } from "./utils.js";
 
 class AwtrixLightDisplayCard extends HTMLElement {
