@@ -33,13 +33,13 @@ command_line:
 
 ## Card configuration
 
-|        Name        |                        Description                        | Required | Default |
-| ------------------ | --------------------------------------------------------- | -------- | --------|
-| `type`             | Cart type (custom:awtrix-light-display-card)              | yes      | n/a     |
-| `sensor`           | The name of the command_line sensor you created           | yes      | n/a     |
-| `resolution`       | Resolution of the image                                   | no       | 256x64  |
-| `bordersize`       | Border size in between of the pixels                      | no       | 1       |
-| `borderradius`     | Configure the border radius for the complete image        | no       | 10      |
+|        Name        |                        Description                         | Required | Default |
+| ------------------ | ---------------------------------------------------------- | -------- | --------|
+| `type`             | Cart type (custom:awtrix-light-display-card)               | yes      | n/a     |
+| `sensor`           | The name of the command_line sensor you created            | yes      | n/a     |
+| `resolution`       | Resolution of the image                                    | no       | 256x64  |
+| `bordersize`       | Border size in between of the pixels                       | no       | 1       |
+| `borderradius`     | Configure the border radius for the image                  | no       | 10      |
 
 Basic example:
 
