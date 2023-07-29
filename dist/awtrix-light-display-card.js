@@ -2,10 +2,11 @@ class AwtrixLightDisplayCard extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
+    this.card = document.createElement('ha-card'); // Create the ha-card element
     this.content = document.createElement('div');
-    this.shadowRoot.appendChild(this.content);
-    this.currentSvg = null; // Store the current SVG for comparison
-    // Define the default width and height
+    this.card.appendChild(this.content); // Add the content to the ha-card
+    this.shadowRoot.appendChild(this.card); // Add the ha-card to the shadow root
+    this.currentSvg = null;
     this.defaultWidth = 256;
     this.defaultHeight = 64;
   }
@@ -131,7 +132,21 @@ class AwtrixLightDisplayCard extends HTMLElement {
 
   createSvgElementWithPictureData(borderSize) {
     // If the sensor data is empty, show this:
-    const pictureData = [ /* Your picture data goes here */ ];
+    const pictureData = [
+      // Your previous picture data goes here
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      16711680, 0, 0, 16711680, 0, 0, 16711680, 0, 0, 0, 0, 16711680, 16711680, 0, 0, 16711680, 16711680, 0,
+      0, 16711680, 16711680, 16711680, 0, 16711680, 16711680, 0, 0, 0, 0, 0, 0, 0, 16711680, 16711680, 0,
+      16711680, 0, 16711680, 0, 16711680, 0, 0, 0, 16711680, 0, 16711680, 0, 16711680, 0, 16711680, 0, 0,
+      16711680, 0, 0, 16711680, 0, 16711680, 0, 0, 0, 0, 0, 0, 16711680, 0, 16711680, 16711680, 0, 16711680,
+      0, 16711680, 0, 0, 0, 16711680, 0, 16711680, 0, 16711680, 16711680, 16711680, 0, 0, 16711680, 0, 0,
+      16711680, 16711680, 16711680, 0, 0, 0, 0, 0, 0, 16711680, 0, 0, 16711680, 0, 16711680, 0, 16711680,
+      0, 0, 0, 16711680, 0, 16711680, 0, 16711680, 0, 16711680, 0, 0, 16711680, 0, 0, 16711680, 0,
+      16711680, 0, 0, 0, 0, 0, 0, 16711680, 0, 0, 16711680, 0, 0, 16711680, 0, 0, 0, 0, 16711680,
+      16711680, 0, 0, 16711680, 0, 16711680, 0, 0, 16711680, 0, 0, 16711680, 0, 16711680, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    ];
     const svg = this.createSvgElement(pictureData, borderSize);
     if (this.currentSvg) {
       // If there was a previous SVG, replace it with the picture SVG
