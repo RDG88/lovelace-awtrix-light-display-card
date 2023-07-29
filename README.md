@@ -3,7 +3,7 @@
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=for-the-badge)](https://github.com/hacs/integration)
 
-<img src="https://raw.githubusercontent.com/RDG88/lovelace-awtrix-light-display-card/main/images/awtrix_screenshot.svg">
+![](https://raw.githubusercontent.com/RDG88/lovelace-awtrix-light-display-card/main/images/awtrix_screenshot.svg)
 
 This is a card that mirrors your AWTRIX light to Home Assistant.
 
@@ -50,6 +50,17 @@ resolution: 256x64
 bordersize: 1
 borderradius: 10
 ```
+
+
+## Troubleshooting
+
+When the sensor is not good configured inside the card or the sensor is not recieving the approperiate data the card will display a default generated image:  
+
+![](https://raw.githubusercontent.com/RDG88/lovelace-awtrix-light-display-card/main/images/awtrix_nodata.svg)
+
+The sensor should have a attribute named screen:
+
+![](https://raw.githubusercontent.com/RDG88/lovelace-awtrix-light-display-card/main/images/awtrix_sensor_screenshot.png)
 
 
 # YOU are welcome to contribute #
