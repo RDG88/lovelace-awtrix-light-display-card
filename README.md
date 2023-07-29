@@ -3,7 +3,7 @@
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=for-the-badge)](https://github.com/hacs/integration)
 
-<img src="https://raw.githubusercontent.com/RDG88/lovelace-awtrix-light-display-card/main/awtrix.png">
+<img src="https://raw.githubusercontent.com/RDG88/lovelace-awtrix-light-display-card/main/images/awtrix_screenshot.svg">
 
 This is a card that mirrors your AWTRIX light to Home Assistant.
 
