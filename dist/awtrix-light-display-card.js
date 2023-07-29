@@ -5,7 +5,6 @@ class AwtrixLightDisplayCard extends HTMLElement {
     this.content = document.createElement('div');
     this.shadowRoot.appendChild(this.content);
     this.currentSvg = null; // Store the current SVG for comparison
-
     // Define the default width and height
     this.defaultWidth = 256;
     this.defaultHeight = 64;
@@ -13,8 +12,9 @@ class AwtrixLightDisplayCard extends HTMLElement {
 
   setConfig(config) {
     this.config = {
-      resolution: '256x64', // Renamed from widthHeight to resolution
-      bordersize: 1, // Renamed from borderWidth to bordersize
+      resolution: '256x64',
+      bordersize: 1,
+      borderradius: 10, // Default border radius is 10
       ...config,
     };
   }
@@ -26,7 +26,7 @@ class AwtrixLightDisplayCard extends HTMLElement {
       hass.states[this.config.sensor]
     ) {
       const sensor = this.config.sensor;
-      const borderSize = parseInt(this.config.bordersize) || 1; // Renamed from borderWidth to bordersize
+      const borderSize = parseInt(this.config.bordersize) || 1;
 
       const sensorData = hass.states[sensor].attributes.screen;
       if (!sensorData) {
@@ -47,7 +47,7 @@ class AwtrixLightDisplayCard extends HTMLElement {
 
       if (!this.currentSvg || isNewData) {
         // If currentSvg is not defined or the data has changed, create/update the SVG
-        const svg = this.createSvgElement(pixelData, borderSize); // Updated function parameter name
+        const svg = this.createSvgElement(pixelData, borderSize);
 
         if (this.currentSvg && isNewData) {
           // Only replace the SVG if the data has changed
@@ -86,8 +86,8 @@ class AwtrixLightDisplayCard extends HTMLElement {
     return pixelData;
   }
 
-  createSvgElement(pixelData, borderSize) { // Updated function parameter name
-    const resolutionParts = this.config.resolution.split('x'); // Renamed from widthHeight to resolution
+  createSvgElement(pixelData, borderSize) {
+    const resolutionParts = this.config.resolution.split('x');
     const width = parseInt(resolutionParts[0]) || this.defaultWidth;
     const height = parseInt(resolutionParts[1]) || this.defaultHeight;
     const scaleX = width / 32;
@@ -100,9 +100,9 @@ class AwtrixLightDisplayCard extends HTMLElement {
     svg.style.display = 'block';
     svg.style.width = '100%';
     svg.style.height = '100%';
-    const cornerRadius = 10;
+    const cornerRadius = parseInt(this.config.borderradius) || 10;
     svg.style.borderRadius = `${cornerRadius}px`;
-    
+
     for (let y = 0; y < 8; y++) {
       for (let x = 0; x < 32; x++) {
         const pixelIndex = y * 32 + x;
@@ -120,7 +120,7 @@ class AwtrixLightDisplayCard extends HTMLElement {
 
         // Add the borderSize attribute to represent the border around the rectangle (pixel)
         svgPixel.setAttribute('stroke', 'black');
-        svgPixel.setAttribute('stroke-width', borderSize); // Updated attribute name
+        svgPixel.setAttribute('stroke-width', borderSize);
 
         svg.appendChild(svgPixel);
       }
@@ -131,17 +131,7 @@ class AwtrixLightDisplayCard extends HTMLElement {
 
   createSvgElementWithPictureData(borderSize) {
     // If the sensor data is empty, show this:
-    const pictureData = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                          16711680, 0, 0, 16711680, 0, 0, 16711680, 0, 0, 0, 0, 16711680, 16711680, 0, 0, 16711680, 16711680, 0, 
-                          0, 16711680, 16711680, 16711680, 0, 16711680, 16711680, 0, 0, 0, 0, 0, 0, 0, 16711680, 16711680, 0, 
-                          16711680, 0, 16711680, 0, 16711680, 0, 0, 0, 16711680, 0, 16711680, 0, 16711680, 0, 16711680, 0, 0, 
-                          16711680, 0, 0, 16711680, 0, 16711680, 0, 0, 0, 0, 0, 0, 16711680, 0, 16711680, 16711680, 0, 16711680, 
-                          0, 16711680, 0, 0, 0, 16711680, 0, 16711680, 0, 16711680, 16711680, 16711680, 0, 0, 16711680, 0, 0, 16711680, 16711680, 
-                          16711680, 0, 0, 0, 0, 0, 0, 16711680, 0, 0, 16711680, 0, 16711680, 0, 16711680, 0, 0, 0, 16711680, 0, 16711680, 0, 16711680, 0, 
-                          16711680, 0, 0, 16711680, 0, 0, 16711680, 0, 16711680, 0, 0, 0, 0, 0, 0, 16711680, 0, 0, 16711680, 0, 0, 16711680, 0, 0, 0, 0, 16711680, 
-                          16711680, 0, 0, 16711680, 0, 16711680, 0, 0, 16711680, 0, 0, 16711680, 0, 16711680, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 
-                        ];
+    const pictureData = [ /* Your picture data goes here */ ];
     const svg = this.createSvgElement(pictureData, borderSize);
     if (this.currentSvg) {
       // If there was a previous SVG, replace it with the picture SVG
