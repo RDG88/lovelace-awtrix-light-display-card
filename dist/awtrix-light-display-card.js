@@ -98,7 +98,7 @@ class AwtrixLightDisplayCard extends HTMLElement {
     svg.setAttribute('width', width);
     svg.setAttribute('height', height);
     svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
-    svg.style.display = 'block';
+    // svg.style.display = 'block';
     svg.style.width = '100%';
     svg.style.height = '100%';
     const cornerRadius = parseInt(this.config.borderradius) || 10;
