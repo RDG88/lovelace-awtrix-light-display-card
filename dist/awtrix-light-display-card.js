@@ -96,7 +96,8 @@ class AwtrixLightDisplayCard extends HTMLElement {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('width', width);
     svg.setAttribute('height', height);
-
+    svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+    
     for (let y = 0; y < 8; y++) {
       for (let x = 0; x < 32; x++) {
         const pixelIndex = y * 32 + x;
