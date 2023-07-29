@@ -39,15 +39,16 @@ command_line:
 | `sensor`           | The name of the command_line sensor you created           | yes                              |
 | `resolution`       | Resolution of the image                                   | no                               |
 | `bordersize`       | Border size in between of the pixels                      | no                               |
-| `borderradius`     | Configure the border radius for the image                 | no                               |
+| `borderradius`     | Configure the border radius for the complete image        | no                               |
 
 Example:
 
 ```yaml
 type: custom:awtrix-light-display-card
 sensor: sensor.awtrix_screenshot
-resolution: 512x128
+resolution: 256x64
 bordersize: 1
+borderradius: 10
 ```
 
 
