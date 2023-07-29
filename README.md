@@ -39,7 +39,7 @@ command_line:
 | `sensor`           | The name of the command_line sensor you created           | yes                              |
 | `resolution`       | Resolution of the image                                   | no                               |
 | `bordersize`       | Border size in between of the pixels                      | no                               |
-
+| `borderradius`     | Configure the border radius for the image                 | no                               |
 
 Example:
 
