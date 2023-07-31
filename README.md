@@ -14,14 +14,14 @@ To fetch data from the AWTRIX Light /api/screen API endpoint into a sensor, you 
 ## Sensor configuration
 
 Example entry for the command_line sensor:
-The scan_interval in this example is set to 0.5 seconds. Please be cautious as it could potentially overload AWTRIX. Use it with care.
+The scan_interval in this example is set to 10 seconds. Please be cautious as it could potentially overload AWTRIX. Use it with care.
 Update the awtrixip in the command with the IP address of your AWTRIX Light.
 
 ```yaml
 command_line:
   - sensor:
       name: awtrix_screenshot
-      scan_interval: 0.5
+      scan_interval: 10
       command: >-
         echo "{\"screen\": \"$(curl --silent --max-time 10 http://awtrixip/api/screen)\"}"
       unique_id: awtrix_screenshot
