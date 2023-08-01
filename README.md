@@ -5,18 +5,56 @@
 
 ![](https://raw.githubusercontent.com/RDG88/lovelace-awtrix-light-display-card/main/images/awtrix_screenshot.svg)
 
-This is a card that mirrors your AWTRIX light to Home Assistant.
+This card enables you to display your AWTRIX light on Home Assistant. 
 
-Configuration is straightforward and can be done via the code editor.
+Configuration is intuitive and easily managed via the code editor.
 
-To fetch data from the AWTRIX Light /api/screen API endpoint into a sensor, you need to create a manual command_line sensor:
+The card requires a sensor that extracts the RGB array from all pixels displayed on AWTRIX, visible in the `screen` attribute. There are two suggested methods for acquiring this array - via MQTT, the most reliable method, or a command_line sensor that interacts with the API.
+
+Please exercise caution as improper use could potentially overload your AWTRIX!.
 
 ## Sensor configuration
 
-Example entry for the command_line sensor:
-The scan_interval in this example is set to 10 seconds. Please be cautious as it could potentially overload AWTRIX. Use it with care.
-Update the awtrixip in the command with the IP address of your AWTRIX Light.
 
+
+### MQTT
+
+Get the screen info into a sensor via a mqtt topic.
+
+This involved 2 parts:
+
+Part1: Create an automation who send an empty message to awtrixtopic/sendscreen
+
+```yaml
+alias: Screenshot every 10 seconds
+description: ""
+trigger:
+  - platform: time_pattern
+    seconds: /10
+condition: []
+action:
+  - service: mqtt.publish
+    data:
+      topic: awtrixtopic/sendscreen
+mode: single
+```
+
+Part2: Create a MQTT sensor who reads the topic awtrixtopic/screen
+
+```yaml
+mqtt:
+  sensor:
+    - name: "awtrix_screenshot"
+      unique_id: "awtrix_screenshot"
+      state_topic: "awtrixtopic/screen"
+      value_template: "1"
+      json_attributes_topic: "awtrixtopic/screen"
+      json_attributes_template: "{\"screen\": \"{{ value_json }}\"}"
+```
+
+### API
+
+Get the screen info into a sensor via a command_line sensor (less preferable way):
 ```yaml
 command_line:
   - sensor:
