@@ -100,7 +100,8 @@ class AwtrixLightDisplayCard extends HTMLElement {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     const borderWidth = this.config.border_width; // SVG border width from config
     const borderColor = this.config.border_color; // SVG border color from config
-    const matrixPadding = this.config.matrix_padding; //CornderRadius
+    const matrixPadding = this.config.matrix_padding; // Matrix padding from config
+    const cornerRadius = parseInt(this.config.border_radius); // cornerRadius from config
 
     svg.setAttribute('width', width);
     svg.setAttribute('height', height);
@@ -108,18 +109,14 @@ class AwtrixLightDisplayCard extends HTMLElement {
     svg.style.display = 'block';
     svg.style.width = '100%';
     svg.style.height = '100%';
-    const cornerRadius = parseInt(this.config.border_radius) || 10;
     if (cornerRadius > 0) {
       svg.style.borderRadius = `${cornerRadius}px`;
-    // } else {
-    //   svg.style.borderRadius = "0"; // Set border radius to 0
     }
-    // svg.style.borderRadius = `${cornerRadius}px`;
-
+    if (borderWidth > 0) {
     // Add a border to the SVG
-    svg.style.border = `${borderWidth}px solid ${borderColor}`;
-
-    // Include the border and padding in the SVG's total width and height
+      svg.style.border = `${borderWidth}px solid ${borderColor}`;
+    }
+    // Include the border and padding in the SVG's
     svg.style.boxSizing = "border-box";
 
 
