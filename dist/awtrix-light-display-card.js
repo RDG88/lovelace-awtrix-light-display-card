@@ -16,6 +16,8 @@ class AwtrixLightDisplayCard extends HTMLElement {
       resolution: '256x64',
       bordersize: 1,
       borderradius: 10, // Default border radius is 10
+      svgborderwidth: 0, // Default SVG border width is 3
+      svgbordercolor: 'white', // Default SVG border color is white
       ...config,
     };
   }
@@ -95,6 +97,9 @@ class AwtrixLightDisplayCard extends HTMLElement {
     const scaleY = height / 8;
 
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    const borderWidth = this.config.svgborderwidth; // SVG border width from config
+    const borderColor = this.config.svgbordercolor; // SVG border color from config
+
     svg.setAttribute('width', width);
     svg.setAttribute('height', height);
     svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
@@ -103,6 +108,13 @@ class AwtrixLightDisplayCard extends HTMLElement {
     svg.style.height = '100%';
     const cornerRadius = parseInt(this.config.borderradius) || 10;
     svg.style.borderRadius = `${cornerRadius}px`;
+
+    // Add a border to the SVG
+    svg.style.border = `${borderWidth}px solid ${borderColor}`;
+
+    // Include the border and padding in the SVG's total width and height
+    svg.style.boxSizing = "border-box";
+
 
     for (let y = 0; y < 8; y++) {
       for (let x = 0; x < 32; x++) {
