@@ -89,6 +89,7 @@ class AwtrixLightDisplayCard extends HTMLElement {
     return pixelData;
   }
 
+
   createSvgElement(pixelData, matrix_padding) {
     const resolutionParts = this.config.resolution.split('x');
     const width = parseInt(resolutionParts[0]) || this.defaultWidth;
@@ -107,7 +108,7 @@ class AwtrixLightDisplayCard extends HTMLElement {
     svg.style.width = '100%';
     svg.style.height = '100%';
     const cornerRadius = parseInt(this.config.border_radius) || 10;
-    svg.style.border_radius = `${cornerRadius}px`;
+    svg.style.borderRadius = `${cornerRadius}px`;
 
     // Add a border to the SVG
     svg.style.border = `${borderWidth}px solid ${borderColor}`;
