@@ -161,3 +161,5 @@ class AwtrixLightDisplayCard extends HTMLElement {
     this.replaceOrCreateSvg(svg);
   }
 }
+
+customElements.define('awtrix-light-display-card', AwtrixLightDisplayCard);
