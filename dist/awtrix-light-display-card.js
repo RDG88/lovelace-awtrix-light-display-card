@@ -16,7 +16,7 @@ class AwtrixLightDisplayCard extends HTMLElement {
       resolution: '256x64',
       bordersize: 1,
       borderradius: 10, // Default border radius is 10
-      svgborderwidth: 0, // Default SVG border width is 3
+      svgborderwidth: 3, // Default SVG border width is 3
       svgbordercolor: 'white', // Default SVG border color is white
       ...config,
     };
