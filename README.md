@@ -74,10 +74,13 @@ command_line:
 |        Name        |                        Description                         | Required | Default |
 | ------------------ | ---------------------------------------------------------- | -------- | --------|
 | `type`             | Cart type (custom:awtrix-light-display-card)               | yes      | n/a     |
-| `sensor`           | The name of the command_line sensor you created            | yes      | n/a     |
+| `sensor`           | The name of the mqtt or command_line sensor you created    | yes      | n/a     |
 | `resolution`       | Resolution of the image                                    | no       | 256x64  |
-| `bordersize`       | Border size in between of the pixels                       | no       | 1       |
-| `borderradius`     | Configure the border radius for the image                  | no       | 10      |
+| `matrix_padding`   | Matrix padding pixel size                                  | no       | 1       |
+| `border_radius`    | Configure the border radius for the image                  | no       | 10      |
+| `border_width`     | Border width around the image                              | no       | 3       |
+| `border_color`     | Border color around the image                              | no       | white   |
+
 
 Basic example:
 
@@ -90,10 +93,12 @@ Advanced example:
 
 ```yaml
 type: custom:awtrix-light-display-card
-sensor: sensor.awtrix_screenshot
+sensor: sensor.custom_awtrix
 resolution: 256x64
-bordersize: 1
-borderradius: 10
+matrix_padding: 1
+border_radius: 10
+border_width: 3
+border_color: white
 ```
 
 
