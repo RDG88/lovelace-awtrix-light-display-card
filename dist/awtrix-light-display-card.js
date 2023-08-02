@@ -138,7 +138,7 @@ class AwtrixLightDisplayCard extends HTMLElement {
         // Add the matrix_padding attribute to represent the border around the rectangle (pixel)
         if (matrixPadding > 0) {
           svgPixel.setAttribute('stroke', 'black');
-          svgPixel.setAttribute('stroke-width', matrix_padding);
+          svgPixel.setAttribute('stroke-width', matrixPadding);
         }
         svg.appendChild(svgPixel);
       }
