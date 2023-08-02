@@ -14,10 +14,10 @@ class AwtrixLightDisplayCard extends HTMLElement {
   setConfig(config) {
     this.config = {
       resolution: '256x64',
-      bordersize: 1,
-      borderradius: 10, // Default border radius is 10
-      svgborderwidth: 0, // Default SVG border width is 0
-      svgbordercolor: 'white', // Default SVG border color is white
+      matrix_padding: 1,
+      border_radius: 10, // Default border radius is 10
+      border_width: 0, // Default SVG border width is 0
+      border_color: 'white', // Default SVG border color is white
       ...config,
     };
   }
@@ -29,19 +29,19 @@ class AwtrixLightDisplayCard extends HTMLElement {
       hass.states[this.config.sensor]
     ) {
       const sensor = this.config.sensor;
-      const borderSize = parseInt(this.config.bordersize) || 1;
+      const matrix_padding = parseInt(this.config.matrix_padding) || 1;
 
       const sensorData = hass.states[sensor].attributes.screen;
       if (!sensorData) {
         // Invalid sensor data, display the provided picture data
-        this.createSvgElementWithPictureData(borderSize);
+        this.createSvgElementWithPictureData(matrix_padding);
         return;
       }
 
       const pixelData = JSON.parse(sensorData);
       if (!Array.isArray(pixelData)) {
         // Invalid sensor data, display the provided picture data
-        this.createSvgElementWithPictureData(borderSize);
+        this.createSvgElementWithPictureData(matrix_padding);
         return;
       }
 
@@ -50,7 +50,7 @@ class AwtrixLightDisplayCard extends HTMLElement {
 
       if (!this.currentSvg || isNewData) {
         // If currentSvg is not defined or the data has changed, create/update the SVG
-        const svg = this.createSvgElement(pixelData, borderSize);
+        const svg = this.createSvgElement(pixelData, matrix_padding);
 
         if (this.currentSvg && isNewData) {
           // Only replace the SVG if the data has changed
@@ -64,8 +64,8 @@ class AwtrixLightDisplayCard extends HTMLElement {
       }
     } else {
       // Sensor not configured or not found, display the provided picture data
-      const borderSize = 1;
-      this.createSvgElementWithPictureData(borderSize);
+      const matrix_padding = 1;
+      this.createSvgElementWithPictureData(matrix_padding);
     }
   }
 
@@ -89,7 +89,7 @@ class AwtrixLightDisplayCard extends HTMLElement {
     return pixelData;
   }
 
-  createSvgElement(pixelData, borderSize) {
+  createSvgElement(pixelData, matrix_padding) {
     const resolutionParts = this.config.resolution.split('x');
     const width = parseInt(resolutionParts[0]) || this.defaultWidth;
     const height = parseInt(resolutionParts[1]) || this.defaultHeight;
@@ -97,8 +97,8 @@ class AwtrixLightDisplayCard extends HTMLElement {
     const scaleY = height / 8;
 
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    const borderWidth = this.config.svgborderwidth; // SVG border width from config
-    const borderColor = this.config.svgbordercolor; // SVG border color from config
+    const borderWidth = this.config.border_width; // SVG border width from config
+    const borderColor = this.config.border_color; // SVG border color from config
 
     svg.setAttribute('width', width);
     svg.setAttribute('height', height);
@@ -106,8 +106,8 @@ class AwtrixLightDisplayCard extends HTMLElement {
     svg.style.display = 'block';
     svg.style.width = '100%';
     svg.style.height = '100%';
-    const cornerRadius = parseInt(this.config.borderradius) || 10;
-    svg.style.borderRadius = `${cornerRadius}px`;
+    const cornerRadius = parseInt(this.config.border_radius) || 10;
+    svg.style.border_radius = `${cornerRadius}px`;
 
     // Add a border to the SVG
     svg.style.border = `${borderWidth}px solid ${borderColor}`;
@@ -131,9 +131,9 @@ class AwtrixLightDisplayCard extends HTMLElement {
         svgPixel.setAttribute('height', scaleY);
         svgPixel.setAttribute('fill', `rgb(${red},${green},${blue})`);
 
-        // Add the borderSize attribute to represent the border around the rectangle (pixel)
+        // Add the matrix_padding attribute to represent the border around the rectangle (pixel)
         svgPixel.setAttribute('stroke', 'black');
-        svgPixel.setAttribute('stroke-width', borderSize);
+        svgPixel.setAttribute('stroke-width', matrix_padding);
 
         svg.appendChild(svgPixel);
       }
@@ -142,7 +142,7 @@ class AwtrixLightDisplayCard extends HTMLElement {
     return svg;
   }
 
-  createSvgElementWithPictureData(borderSize) {
+  createSvgElementWithPictureData(matrix_padding) {
     // If the sensor data is empty, show this:
     const pictureData = [
       // Your previous picture data goes here
@@ -159,7 +159,7 @@ class AwtrixLightDisplayCard extends HTMLElement {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     ];
-    const svg = this.createSvgElement(pictureData, borderSize);
+    const svg = this.createSvgElement(pictureData, matrix_padding);
     if (this.currentSvg) {
       // If there was a previous SVG, replace it with the picture SVG
       this.content.replaceChild(svg, this.currentSvg);
