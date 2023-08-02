@@ -100,6 +100,7 @@ class AwtrixLightDisplayCard extends HTMLElement {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     const borderWidth = this.config.border_width; // SVG border width from config
     const borderColor = this.config.border_color; // SVG border color from config
+    const matrixPadding = this.config.matrix_padding; //CornderRadius
 
     svg.setAttribute('width', width);
     svg.setAttribute('height', height);
@@ -138,9 +139,10 @@ class AwtrixLightDisplayCard extends HTMLElement {
         svgPixel.setAttribute('fill', `rgb(${red},${green},${blue})`);
 
         // Add the matrix_padding attribute to represent the border around the rectangle (pixel)
-        svgPixel.setAttribute('stroke', 'black');
-        svgPixel.setAttribute('stroke-width', matrix_padding);
-
+        if (matrixPadding > 0) {
+          svgPixel.setAttribute('stroke', 'black');
+          svgPixel.setAttribute('stroke-width', matrix_padding);
+        }
         svg.appendChild(svgPixel);
       }
     }
