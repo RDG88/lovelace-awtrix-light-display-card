@@ -108,6 +108,11 @@ class AwtrixLightDisplayCard extends HTMLElement {
     svg.style.width = '100%';
     svg.style.height = '100%';
     const cornerRadius = parseInt(this.config.border_radius) || 10;
+    if (cornerRadius > 0) {
+      svg.style.borderRadius = `${cornerRadius}px`;
+    } else {
+      svg.style.borderRadius = "0"; // Set border radius to 0
+    }
     svg.style.borderRadius = `${cornerRadius}px`;
 
     // Add a border to the SVG
