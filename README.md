@@ -23,7 +23,9 @@ Get the screen info into a sensor via a mqtt topic.
 
 This involved 2 parts:
 
-Part1: Create an automation who send an empty message to awtrixtopic/sendscreen
+Part1: Create an automation who send an empty message to awtrixtopic/sendscreen   
+
+Modify the `awtrixtopic` with ur own awtrixtopic value, this value can be found in the AWTRIX Web interface -> MQTT -> Prefix.
 
 ```yaml
 alias: Screenshot every 10 seconds
@@ -41,6 +43,8 @@ mode: single
 
 Part2: Create a MQTT sensor who reads the topic awtrixtopic/screen
 
+Modify the `awtrixtopic` with ur own awtrixtopic value, this value can be found in the AWTRIX Web interface -> MQTT -> Prefix.
+
 ```yaml
 mqtt:
   sensor:
@@ -55,6 +59,9 @@ mqtt:
 ### API
 
 Get the screen info into a sensor via a command_line sensor (less preferable way):
+
+Modify the `awtrixip` with ur own awtrix ip address.
+
 ```yaml
 command_line:
   - sensor:
@@ -93,7 +100,7 @@ Advanced example:
 
 ```yaml
 type: custom:awtrix-light-display-card
-sensor: sensor.custom_awtrix
+sensor: sensor.awtrix_screenshot
 resolution: 256x64
 matrix_padding: 1
 border_radius: 10
