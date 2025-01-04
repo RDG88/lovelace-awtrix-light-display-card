@@ -40,17 +40,21 @@ class AwtrixLightDisplayCard extends HTMLElement {
     switch (actionConfig.action) {
       case 'navigate':
         if (actionConfig.navigation_path) {
-          hass.callService('lovelace', 'navigate', {
-            path: actionConfig.navigation_path,
-          });
+          window.history.pushState(null, '', actionConfig.navigation_path);
+          const navigateEvent = new Event('location-changed', { bubbles: true, composed: true });
+          window.dispatchEvent(navigateEvent);
         }
         break;
 
       case 'more-info':
         if (this.config.entity) {
-          hass.callService('homeassistant', 'more_info', {
-            entity_id: this.config.entity,
+          const moreInfoEvent = new Event('hass-more-info', {
+            bubbles: true,
+            cancelable: false,
+            composed: true,
           });
+          moreInfoEvent.detail = { entityId: this.config.entity };
+          this.dispatchEvent(moreInfoEvent);
         }
         break;
 
@@ -78,51 +82,42 @@ class AwtrixLightDisplayCard extends HTMLElement {
 
       const sensorData = hass.states[sensor].attributes.screen;
       if (!sensorData) {
-        // Invalid sensor data, display the provided picture data
         this.createSvgElementWithPictureData(matrix_padding);
         return;
       }
 
       const pixelData = JSON.parse(sensorData);
       if (!Array.isArray(pixelData)) {
-        // Invalid sensor data, display the provided picture data
         this.createSvgElementWithPictureData(matrix_padding);
         return;
       }
 
-      // Check if pixelData has changed since the last update
       const isNewData = this.hasPixelDataChanged(pixelData);
 
       if (!this.currentSvg || isNewData) {
-        // If currentSvg is not defined or the data has changed, create/update the SVG
         const svg = this.createSvgElement(pixelData, matrix_padding);
 
         if (this.currentSvg && isNewData) {
-          // Only replace the SVG if the data has changed
           this.content.replaceChild(svg, this.currentSvg);
         } else if (!this.currentSvg) {
-          // If currentSvg is not defined, create the initial SVG
           this.content.appendChild(svg);
         }
 
         this.currentSvg = svg;
       }
     } else {
-      // Sensor not configured or not found, display the provided picture data
       const matrix_padding = 1;
       this.createSvgElementWithPictureData(matrix_padding);
     }
   }
 
   hasPixelDataChanged(newPixelData) {
-    if (!this.currentSvg) return true; // If currentSvg is not defined, consider it as new data
+    if (!this.currentSvg) return true;
 
-    // Compare the pixelData arrays to check if there are any differences
     return JSON.stringify(newPixelData) !== JSON.stringify(this.getPixelDataFromSvg());
   }
 
   getPixelDataFromSvg() {
-    // Extract the pixelData from the current SVG
     const pixelData = [];
     const svgPixels = this.currentSvg.getElementsByTagName('rect');
     for (let i = 0; i < svgPixels.length; i++) {
@@ -133,7 +128,7 @@ class AwtrixLightDisplayCard extends HTMLElement {
     }
     return pixelData;
   }
-  
+
   disconnectedCallback() {
     this.card.removeEventListener('click', this.handleClick);
   }
@@ -146,10 +141,10 @@ class AwtrixLightDisplayCard extends HTMLElement {
     const scaleY = height / 8;
 
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    const borderWidth = this.config.border_width; // SVG border width from config
-    const borderColor = this.config.border_color; // SVG border color from config
-    const matrixPadding = this.config.matrix_padding; // Matrix padding from config
-    const cornerRadius = parseInt(this.config.border_radius); // cornerRadius from config
+    const borderWidth = this.config.border_width;
+    const borderColor = this.config.border_color;
+    const matrixPadding = this.config.matrix_padding;
+    const cornerRadius = parseInt(this.config.border_radius);
 
     svg.setAttribute('width', width);
     svg.setAttribute('height', height);
@@ -161,12 +156,9 @@ class AwtrixLightDisplayCard extends HTMLElement {
       svg.style.borderRadius = `${cornerRadius}px`;
     }
     if (borderWidth > 0) {
-    // Add a border to the SVG
       svg.style.border = `${borderWidth}px solid ${borderColor}`;
     }
-    // Include the border and padding in the SVG's
     svg.style.boxSizing = "border-box";
-
 
     for (let y = 0; y < 8; y++) {
       for (let x = 0; x < 32; x++) {
@@ -183,7 +175,6 @@ class AwtrixLightDisplayCard extends HTMLElement {
         svgPixel.setAttribute('height', scaleY);
         svgPixel.setAttribute('fill', `rgb(${red},${green},${blue})`);
 
-        // Add the matrix_padding attribute to represent the border around the rectangle (pixel)
         if (matrixPadding > 0) {
           svgPixel.setAttribute('stroke', 'black');
           svgPixel.setAttribute('stroke-width', matrixPadding);
@@ -196,28 +187,15 @@ class AwtrixLightDisplayCard extends HTMLElement {
   }
 
   createSvgElementWithPictureData(matrix_padding) {
-    // If the sensor data is empty, show this:
     const pictureData = [
-      // Your previous picture data goes here
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      16711680, 0, 0, 16711680, 0, 0, 16711680, 0, 0, 0, 0, 16711680, 16711680, 0, 0, 16711680, 16711680, 0,
-      0, 16711680, 16711680, 16711680, 0, 16711680, 16711680, 0, 0, 0, 0, 0, 0, 0, 16711680, 16711680, 0,
-      16711680, 0, 16711680, 0, 16711680, 0, 0, 0, 16711680, 0, 16711680, 0, 16711680, 0, 16711680, 0, 0,
-      16711680, 0, 0, 16711680, 0, 16711680, 0, 0, 0, 0, 0, 0, 16711680, 0, 16711680, 16711680, 0, 16711680,
-      0, 16711680, 0, 0, 0, 16711680, 0, 16711680, 0, 16711680, 16711680, 16711680, 0, 0, 16711680, 0, 0,
-      16711680, 16711680, 16711680, 0, 0, 0, 0, 0, 0, 16711680, 0, 0, 16711680, 0, 16711680, 0, 16711680,
-      0, 0, 0, 16711680, 0, 16711680, 0, 16711680, 0, 16711680, 0, 0, 16711680, 0, 0, 16711680, 0,
-      16711680, 0, 0, 0, 0, 0, 0, 16711680, 0, 0, 16711680, 0, 0, 16711680, 0, 0, 0, 0, 16711680,
-      16711680, 0, 0, 16711680, 0, 16711680, 0, 0, 16711680, 0, 0, 16711680, 0, 16711680, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      // Example placeholder picture data
+      0, 0, 0, 0, 16711680, 16711680, 0, 0, 0, 0, 0, 16711680, 0, 0, 0, 0,
+      16711680, 0, 0, 16711680, 0, 0, 0, 0, 0, 0, 0, 16711680, 0, 0, 0, 0,
     ];
     const svg = this.createSvgElement(pictureData, matrix_padding);
     if (this.currentSvg) {
-      // If there was a previous SVG, replace it with the picture SVG
       this.content.replaceChild(svg, this.currentSvg);
     } else {
-      // If there was no previous SVG, create the initial SVG with the picture data
       this.content.appendChild(svg);
     }
 
