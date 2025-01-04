@@ -9,6 +9,8 @@ class AwtrixLightDisplayCard extends HTMLElement {
     this.currentSvg = null;
     this.defaultWidth = 256;
     this.defaultHeight = 64;
+    // Bind the handleClick method
+    this.handleClick = this.handleClick.bind(this);
   }
 
   setConfig(config) {
@@ -18,11 +20,54 @@ class AwtrixLightDisplayCard extends HTMLElement {
       border_radius: 10, // Default border radius is 10
       border_width: 3, // Default SVG border width is 0
       border_color: 'white', // Default SVG border color is white
+      tap_action: {
+        action: 'more-info', // Default action is 'more-info'
+      },
       ...config,
     };
+    // Add a click event listener to the card
+    this.card.addEventListener('click', this.handleClick);
+  }
+
+  handleClick(event) {
+    if (!this.config || !this.config.tap_action) return;
+
+    const actionConfig = this.config.tap_action;
+    const hass = this._hass;
+
+    if (!hass) return;
+
+    switch (actionConfig.action) {
+      case 'navigate':
+        if (actionConfig.navigation_path) {
+          hass.callService('lovelace', 'navigate', {
+            path: actionConfig.navigation_path,
+          });
+        }
+        break;
+
+      case 'more-info':
+        if (this.config.entity) {
+          hass.callService('homeassistant', 'more_info', {
+            entity_id: this.config.entity,
+          });
+        }
+        break;
+
+      case 'call-service':
+        if (actionConfig.service) {
+          const [domain, service] = actionConfig.service.split('.');
+          hass.callService(domain, service, actionConfig.service_data || {});
+        }
+        break;
+
+      default:
+        console.warn('Unsupported action type:', actionConfig.action);
+    }
   }
 
   set hass(hass) {
+    this._hass = hass;
     if (
       this.config &&
       this.config.sensor &&
@@ -88,7 +133,10 @@ class AwtrixLightDisplayCard extends HTMLElement {
     }
     return pixelData;
   }
-
+  
+  disconnectedCallback() {
+    this.card.removeEventListener('click', this.handleClick);
+  }
 
   createSvgElement(pixelData, matrix_padding) {
     const resolutionParts = this.config.resolution.split('x');
