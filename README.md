@@ -5,7 +5,7 @@
 
 ![](https://raw.githubusercontent.com/RDG88/lovelace-awtrix-light-display-card/main/images/awtrix_screenshot.svg)
 
-This card enables you to display your AWTRIX light on Home Assistant. 
+This card enables you to display your AWTRIX light on Home Assistant. (both old AWTRIX3 and new AWTRIX-NG)
 
 Configuration is intuitive and easily managed via the code editor.
 
@@ -27,6 +27,7 @@ Part1: Create an automation who send an empty message to awtrixtopic/sendscreen
 
 Modify the `awtrixtopic` with ur own awtrixtopic value, this value can be found in the AWTRIX Web interface -> MQTT -> Prefix.
 
+awtrix 3:
 ```yaml
 alias: Screenshot every 10 seconds
 description: ""
@@ -41,10 +42,26 @@ action:
 mode: single
 ```
 
+awtrix NG:
+```yaml
+alias: Screenshot every 10 seconds
+description: ""
+trigger:
+  - platform: time_pattern
+    seconds: /10
+condition: []
+action:
+  - service: mqtt.publish
+    data:
+      topic: awtrixtopic/cmd/screen/get
+mode: single
+```
+
 Part2: Create a MQTT sensor who reads the topic awtrixtopic/screen
 
 Modify the `awtrixtopic` with ur own awtrixtopic value, this value can be found in the AWTRIX Web interface -> MQTT -> Prefix.
 
+awtrix 3:
 ```yaml
 mqtt:
   sensor:
@@ -56,12 +73,26 @@ mqtt:
       json_attributes_template: "{\"screen\": \"{{ value_json }}\"}"
 ```
 
+awtrix NG:
+```yaml
+mqtt:
+  sensor:
+    - name: "awtrix_screenshot"
+      unique_id: "awtrix_screenshot"
+      state_topic: "awtrixtopic/state/screen"
+      value_template: "1"
+      json_attributes_topic: "awtrixtopic/state/screen"
+      json_attributes_template: >
+        {"screen": "[{{ value_json.pixels | join(',') }}]"}
+```
+
 ### API
 
 Get the screen info into a sensor via a command_line sensor (less preferable way):
 
 Modify the `awtrixip` with ur own awtrix ip address.
 
+awtrix 3:
 ```yaml
 command_line:
   - sensor:
